@@ -5,11 +5,11 @@ describe('calculate', () => {
   it.each([
     ['adds two numbers', 2, '+', 3, 5],
     ['subtracts two numbers', 5, '-', 3, 2],
+    ['multiplies two numbers', 4, '*', 3, 12],
   ])('%s', (_name, a, operator, b, expected) => {
     expect(calculate(a, operator, b)).toBe(expected);
   });
 
-  it.todo('multiplies two numbers');
   it.todo('divides two numbers');
   it.todo('throws on division by zero');
   it.todo('throws on unknown operator');
