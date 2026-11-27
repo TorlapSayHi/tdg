@@ -1,3 +1,7 @@
+const OPERATIONS = {
+  '+': (a, b) => a + b,
+};
+
 export function calculate(a, operator, b) {
-  if (operator === '+') return a + b;
+  return OPERATIONS[operator](a, b);
 }
