@@ -1,37 +1,29 @@
-import { calculate } from './calculator.js';
+import { initialState, pressKey } from './keypad.js';
 
-const KEYS = ['7', '8', '9', '/', '4', '5', '6', '*', '1', '2', '3', '-', '0', '=', '+'];
+const KEYS = [
+  { key: '7' }, { key: '8' }, { key: '9' }, { key: '/', label: '÷', kind: 'op' },
+  { key: '4' }, { key: '5' }, { key: '6' }, { key: '*', label: '×', kind: 'op' },
+  { key: '1' }, { key: '2' }, { key: '3' }, { key: '-', label: '−', kind: 'op' },
+  { key: '0' }, { key: '=', kind: 'equals' }, { key: '+', kind: 'op' },
+];
+
+const renderKey = ({ key, label = key, kind = 'digit' }) =>
+  `<button type="button" class="key key--${kind}" data-key="${key}">${label}</button>`;
 
 export function mountCalculator(root) {
   root.innerHTML = `
-    <output data-testid="display">0</output>
-    <div class="keys">
-      ${KEYS.map((key) => `<button type="button" data-key="${key}">${key}</button>`).join('')}
+    <div class="calculator">
+      <output class="display" data-testid="display" aria-live="polite">${initialState.display}</output>
+      <div class="keys">${KEYS.map(renderKey).join('')}</div>
     </div>
   `;
   const display = root.querySelector('[data-testid="display"]');
-
-  let current = '';
-  let previous = null;
-  let operator = null;
+  let state = initialState;
 
   root.addEventListener('click', (event) => {
-    const key = event.target.dataset?.key;
+    const key = event.target.closest('[data-key]')?.dataset.key;
     if (!key) return;
-
-    if (/^\d$/.test(key)) {
-      current += key;
-      display.textContent = current;
-    } else if (key === '=') {
-      const result = calculate(previous, operator, Number(current));
-      display.textContent = String(result);
-      current = String(result);
-      previous = null;
-      operator = null;
-    } else {
-      previous = Number(current);
-      operator = key;
-      current = '';
-    }
+    state = pressKey(state, key);
+    display.textContent = state.display;
   });
 }
