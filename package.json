@@ -1,0 +1,15 @@
+{
+  "name": "tdg-calculator",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "coverage": "vitest run --coverage"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^3.2.7",
+    "jsdom": "^29.1.1",
+    "vitest": "^3.2.7"
+  }
+}
